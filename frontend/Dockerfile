@@ -9,7 +9,7 @@ RUN npm install
 
 COPY ./ /app/
 
-ARG VITE_API_URL=${VITE_API_URL}
+ENV VITE_API_URL="http://54.172.230.159:8000"
 
 RUN npm run build
 

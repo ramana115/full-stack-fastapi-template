@@ -2,7 +2,8 @@ import sentry_sdk
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
 from starlette.middleware.cors import CORSMiddleware
-
+from sqlmodel import Session
+from app.core.db import init_db, engine
 from app.api.main import api_router
 from app.core.config import settings
 
@@ -24,10 +25,15 @@ app = FastAPI(
 if settings.all_cors_origins:
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=settings.all_cors_origins,
+        allow_origins=["*"],
         allow_credentials=True,
         allow_methods=["*"],
         allow_headers=["*"],
     )
-
+print("CORS Origins:", settings.all_cors_origins)
+print("Sentry DSN:", settings.SENTRY_DSN)
 app.include_router(api_router, prefix=settings.API_V1_STR)
+@app.on_event("startup")
+def on_startup():
+    with Session(engine) as session:
+        init_db(session)
