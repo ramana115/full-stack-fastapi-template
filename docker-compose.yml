@@ -3,13 +3,13 @@ version: '3.8'
 
 services:
   frontend:
-    image: ramanapatel/frontend:${BUILD_ID}
+    image: ramanapatel/frontend:24
     ports:
       - "80:80"
     restart: unless-stopped
 
   backend:
-    image: ramanapatel/backend:${BUILD_ID}
+    image: ramanapatel/backend:24
     ports:
       - "8000:8000"
     restart: unless-stopped
